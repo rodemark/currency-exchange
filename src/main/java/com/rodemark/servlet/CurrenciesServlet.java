@@ -1,6 +1,7 @@
 package com.rodemark.servlet;
 
 
+import com.rodemark.services.AllCurrenciesService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,10 +19,12 @@ public class CurrenciesServlet extends HttpServlet {
      * Получение списка всех валют.
      */
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html");
-        PrintWriter printWriter = resp.getWriter();
-        printWriter.write("Hello!");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter printWriter = response.getWriter();
+        AllCurrenciesService allCurrenciesService = new AllCurrenciesService();
+
+        printWriter.write(allCurrenciesService.run(request));
         printWriter.close();
     }
 
