@@ -8,10 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class ExchangeRatesRepository implements CrudRepository<ExchangeRate> {
-
-
-
-    @Override
     public Optional<ExchangeRate> findById(Long id) {
         return Optional.empty();
     }
@@ -21,18 +17,4 @@ public class ExchangeRatesRepository implements CrudRepository<ExchangeRate> {
         return null;
     }
 
-    @Override
-    public void save(ExchangeRate entity) {
-
-    }
-
-    @Override
-    public void update(ExchangeRate entity) {
-
-    }
-
-    @Override
-    public void delete(Long id) {
-
-    }
 }

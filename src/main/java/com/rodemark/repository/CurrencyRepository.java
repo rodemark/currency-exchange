@@ -9,20 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class CurrencyRepository implements CrudRepository<Currency>{
-    private final String QUERY_FIND_BY_ID = "select SELECT * FROM Currency WHERE id = ? + id";
-    private final String QUERY_FIND_BY_CODE = "";
-    private final String QUERY_UPDATE = "";
-
-
-    public Optional<Currency> findByCode(String code) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Currency> findById(Long id) {
-        return Optional.empty();
-    }
-
     @Override
     public List<Currency> findAll() {
         List<Currency> currencies = new ArrayList<>();
@@ -49,20 +35,61 @@ public class CurrencyRepository implements CrudRepository<Currency>{
         }
     }
 
+    public void insertCurrency(Currency currency) {
+        String query = "insert into currencies (code, full_name, sign) values (?, ?, ?)";
+        try (Connection connection = ConnectionDataBase.getConnection()){
 
-    @Override
-    public void update(Currency currency) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, currency.getCode());
+            statement.setString(2, currency.getFull_name());
+            statement.setString(3, currency.getSign());
 
+            statement.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
     }
 
-
-    @Override
-    public void save(Currency entity) {
-
+    public Optional<Currency> findById(Long id) {
+        String query = "Select * from currencies where id = ?";
+        return findBy_(query, id);
     }
 
-    @Override
-    public void delete(Long id) {
+    public Optional<Currency> findByCode(String code) {
+        String query = "Select * from currencies where code = ?";
+        return findBy_(query, code);
+    }
+
+    private Optional<Currency> findBy_ (String query, Object param){
+        try (Connection connection = ConnectionDataBase.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            if (param instanceof String) {
+                preparedStatement.setString(1, (String) param);
+            }
+
+            if (param instanceof Long) {
+                preparedStatement.setInt(1, ((Long) param).intValue());
+            }
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                Currency currency = new Currency();
+                currency.setID(resultSet.getLong("ID"));
+                currency.setCode(resultSet.getString("code"));
+                currency.setFull_name(resultSet.getString("full_name"));
+                currency.setSign(resultSet.getString("sign"));
+
+                return Optional.of(currency);
+            } else {
+                return Optional.empty();
+            }
+        }
+        catch (SQLException exception) {
+            exception.printStackTrace();
+            return Optional.empty();
+        }
 
     }
 
