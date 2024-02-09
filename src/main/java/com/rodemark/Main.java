@@ -1,11 +1,15 @@
 package com.rodemark;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.rodemark.model.Currency;
 import com.rodemark.repository.ConnectionDataBase;
 import com.rodemark.repository.CurrencyRepository;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Locale;
+import java.util.Optional;
 
 public class Main {
     public static void main(String[] args){
@@ -17,7 +21,5 @@ public class Main {
 
         Long ID = 1L;
         System.out.println(currencyRepository.findById(ID).get().getFull_name());
-
-
     }
 }

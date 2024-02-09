@@ -1,5 +1,8 @@
 package com.rodemark.servlet;
 
+import com.rodemark.repository.CurrencyRepository;
+import com.rodemark.services.CurrenciesService;
+import com.rodemark.services.ResponseService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,22 +12,56 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet("/currency")
+@WebServlet(urlPatterns = {"/currency/*"})
 public class CurrencyServlet extends HttpServlet {
+
+    private CurrencyRepository currencyRepository;
+    @Override
+    public void init() {
+        currencyRepository = new CurrencyRepository();
+        currencyRepository.findById(1L);
+    }
 
     /**
      * Получение конкретной валюты.
      * Пример запроса - GET /currency/EUR
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
-        PrintWriter printWriter = response.getWriter();
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ResponseService responseService = new ResponseService(request, response);
+        CurrenciesService currenciesService = new CurrenciesService();
 
-        String name = request.getParameter("name");
+        try {
+            String requestURI = request.getRequestURI();
+            String code = (requestURI).substring(requestURI.lastIndexOf('/') + 1);
 
-        printWriter.write(name);
-        printWriter.close();
+            currencyRepository = new CurrencyRepository();
+
+            if (code.matches("([a-zA-Z]){3}")){
+                response.setContentType("application/json");
+                PrintWriter printWriter = response.getWriter();
+
+                String answer = currenciesService.getRequiredCurrency(code, currencyRepository);
+
+                if (answer.equals("{}")){
+                    responseService.currencyNotExist();
+                    return;
+                }
+
+                printWriter.println(answer);
+                printWriter.close();
+
+                responseService.doGetOk();
+            }
+            else{
+                responseService.fieldIsMissing();
+            }
+
+        }
+        catch (IOException exception){
+            responseService.dataBaseNotFound();
+            exception.printStackTrace();
+        }
     }
 
 

@@ -10,29 +10,35 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 
 public class CurrenciesService {
 
     /**
      *  Печатает json со всеми валютами
      */
-    public void printAllCurrenciesJSON(HttpServletRequest request, HttpServletResponse response,
-                                       CurrencyRepository currencyRepository) throws IOException {
-        response.setContentType("application/json");
-        PrintWriter printWriter = response.getWriter();
-
+    public String getAllCurrenciesJSON(CurrencyRepository currencyRepository) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String json = gson.toJson(currencyRepository.findAll());
 
-        printWriter.println(json);
-        printWriter.close();
+        return gson.toJson(currencyRepository.findAll());
+    }
+
+    public boolean existCurrency(Currency currency, CurrencyRepository currencyRepository){
+        return currencyRepository.findByCode(currency.getCode()).isPresent();
+    }
+
+    public String getRequiredCurrency(String code, CurrencyRepository currencyRepository) throws IOException {
+        Optional<Currency> currency = currencyRepository.findByCode(code.toUpperCase(Locale.ROOT));
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        return gson.toJson(currency);
     }
 
     /**
      *  Печатает в виде таблицы все валюты с их характеристиками
      */
-    public void printAllCurrencies(HttpServletRequest request, HttpServletResponse response,
-                                   CurrencyRepository currencyRepository) throws IOException {
+    public void printAllCurrencies(HttpServletRequest request, HttpServletResponse response, CurrencyRepository currencyRepository) throws IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
