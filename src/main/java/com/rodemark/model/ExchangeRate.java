@@ -33,4 +33,10 @@ public class ExchangeRate extends Entity{
 
     private String baseCode;
     private String targetCode;
+
+    public ExchangeRate(Long base_currency_id, Long target_currency_id, BigDecimal rate) {
+        this.base_currency_id = base_currency_id;
+        this.target_currency_id = target_currency_id;
+        this.rate = rate;
+    }
 }

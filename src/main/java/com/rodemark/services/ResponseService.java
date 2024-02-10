@@ -35,6 +35,10 @@ public class ResponseService {
         response.sendError(404, "The exchange rate for the pair was not found.");
     }
 
+    public void exchangeRateAlreadyExist() throws IOException {
+        response.sendError(409, "Exchange rate already exists.");
+    }
+
     public void currencyNotExist() throws IOException{
         response.sendError(404, "Currency does not exist in the database.");
     }

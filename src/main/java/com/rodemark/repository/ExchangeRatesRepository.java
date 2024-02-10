@@ -47,6 +47,10 @@ public class ExchangeRatesRepository implements CrudRepository<ExchangeRate> {
         Optional<Currency> currencyTarget = currencyRepository.findByCode(targetCode);
         Optional<Currency> currencyBase = currencyRepository.findByCode(baseCode);
 
+        if (currencyTarget.isEmpty() || currencyBase.isEmpty()){
+            return Optional.empty();
+        }
+
         String query = "select * from exchange_rates where target_currency_id = ? and base_currency_id = ?";
 
         try (Connection connection = ConnectionDataBase.getConnection()) {
@@ -71,7 +75,21 @@ public class ExchangeRatesRepository implements CrudRepository<ExchangeRate> {
             exception.printStackTrace();
             return Optional.empty();
         }
+    }
 
+    public void insertExchangeRate(ExchangeRate exchangeRate){
+        String query = "insert into exchange_rates (target_currency_id, base_currency_id, rate) values (?, ?, ?)";
+        try (Connection connection = ConnectionDataBase.getConnection()){
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setLong(1, exchangeRate.getTarget_currency_id());
+            statement.setLong(2, exchangeRate.getBase_currency_id());
+            statement.setBigDecimal(3, exchangeRate.getRate());
+
+            statement.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
     }
 
 }
