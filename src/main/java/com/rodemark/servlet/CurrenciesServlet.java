@@ -17,10 +17,14 @@ import java.io.PrintWriter;
 public class CurrenciesServlet extends HttpServlet {
     private CurrencyRepository currencyRepository;
     private ResponseService responseService;
+
+    private CurrenciesService currenciesService;
     @Override
     public void init() {
         currencyRepository = new CurrencyRepository();
         currencyRepository.findById(1L);
+
+        currenciesService = new CurrenciesService();
     }
 
     /**
@@ -34,7 +38,6 @@ public class CurrenciesServlet extends HttpServlet {
             response.setContentType("application/json");
             PrintWriter printWriter = response.getWriter();
 
-            CurrenciesService currenciesService = new CurrenciesService();
             String answer = currenciesService.getAllCurrenciesJSON(currencyRepository);
 
             printWriter.println(answer);
@@ -57,7 +60,6 @@ public class CurrenciesServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
         responseService = new ResponseService(request, response);
         try {
-            CurrenciesService currenciesService = new CurrenciesService();
 
             String name = request.getParameter("name");
             String code = request.getParameter("code");

@@ -41,7 +41,7 @@ public class CurrencyServlet extends HttpServlet {
                 response.setContentType("application/json");
                 PrintWriter printWriter = response.getWriter();
 
-                String answer = currenciesService.getRequiredCurrency(code, currencyRepository);
+                String answer = currenciesService.getRequiredCurrencyJSON(code, currencyRepository);
 
                 if (answer.equals("{}")){
                     responseService.currencyNotExist();

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список всех валют</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        table {
+            margin: auto;
+            border-collapse: collapse;
+            width: 80%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+<h2>Список всех валют</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Код</th>
+        <th>Название</th>
+        <th>Знак</th>
+    </tr>
+    </thead>
+    <tbody id="currencyTable">
+    <!-- Сюда будут вставлены данные о валютах из сервлета -->
+    </tbody>
+</table>
+
+<script>
+    // Загрузка данных о валютах из сервлета
+    fetch('/currencies')
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById('currencyTable');
+            data.forEach(currency => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                        <td>${currency.ID}</td>
+                        <td>${currency.code}</td>
+                        <td>${currency.full_name}</td>
+                        <td>${currency.sign}</td>
+                    `;
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Ошибка загрузки данных:', error));
+</script>
+</body>
+
+</html>

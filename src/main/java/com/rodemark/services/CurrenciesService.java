@@ -16,7 +16,7 @@ import java.util.Optional;
 public class CurrenciesService {
 
     /**
-     *  Печатает json со всеми валютами
+     *  Возвращает json со всеми валютами
      */
     public String getAllCurrenciesJSON(CurrencyRepository currencyRepository) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -24,15 +24,18 @@ public class CurrenciesService {
         return gson.toJson(currencyRepository.findAll());
     }
 
-    public boolean existCurrency(Currency currency, CurrencyRepository currencyRepository){
-        return currencyRepository.findByCode(currency.getCode()).isPresent();
-    }
-
-    public String getRequiredCurrency(String code, CurrencyRepository currencyRepository) throws IOException {
+    /**
+     *  Возвращает json конкретной валюты с кодом - code
+     */
+    public String getRequiredCurrencyJSON(String code, CurrencyRepository currencyRepository) throws IOException {
         Optional<Currency> currency = currencyRepository.findByCode(code.toUpperCase(Locale.ROOT));
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         return gson.toJson(currency);
+    }
+
+    public boolean existCurrency(Currency currency, CurrencyRepository currencyRepository){
+        return currencyRepository.findByCode(currency.getCode()).isPresent();
     }
 
     /**
