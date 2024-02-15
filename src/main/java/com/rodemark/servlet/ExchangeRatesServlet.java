@@ -1,12 +1,10 @@
 package com.rodemark.servlet;
 
-import com.rodemark.model.Currency;
 import com.rodemark.model.ExchangeRate;
 import com.rodemark.repository.CurrencyRepository;
 import com.rodemark.repository.ExchangeRatesRepository;
 import com.rodemark.services.ExchangeRateService;
 import com.rodemark.services.ResponseService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;

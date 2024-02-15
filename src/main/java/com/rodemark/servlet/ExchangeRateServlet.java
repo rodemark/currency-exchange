@@ -1,5 +1,7 @@
 package com.rodemark.servlet;
 
+import com.rodemark.model.ExchangeRate;
+import com.rodemark.repository.CurrencyRepository;
 import com.rodemark.repository.ExchangeRatesRepository;
 import com.rodemark.services.ExchangeRateService;
 import com.rodemark.services.ResponseService;
@@ -10,11 +12,11 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 
 
 @WebServlet("/exchangeRate/*")
 public class ExchangeRateServlet extends HttpServlet {
-
     private ExchangeRatesRepository exchangeRatesRepository;
     private ResponseService responseService;
     private ExchangeRateService exchangeRateService;
@@ -64,6 +66,52 @@ public class ExchangeRateServlet extends HttpServlet {
             responseService.dataBaseNotFound();
             exception.printStackTrace();
         }
+    }
 
+    /**
+     *  Обновление существующего в базе обменного курса.
+     *  Пример: /exchangeRate/USDRUB?rate=1
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        responseService = new ResponseService(request, response);
+        exchangeRatesRepository = new ExchangeRatesRepository();
+        CurrencyRepository currencyRepository = new CurrencyRepository();
+
+        try {
+            String requestURI = request.getRequestURI();
+            String code = (requestURI).substring(requestURI.lastIndexOf('/') + 1);
+            BigDecimal rate = new BigDecimal(request.getParameter("rate"));
+
+            if (code.matches("([a-zA-Z]){6}")) {
+                String baseCode = code.substring(0, 3).toUpperCase();
+                String targetCode = code.substring(3).toUpperCase();
+
+                if (currencyRepository.findByCode(baseCode).isEmpty() || currencyRepository.findByCode(targetCode).isEmpty()){
+                    responseService.fieldIsMissing();
+                    return;
+                }
+
+                Long baseID = currencyRepository.findByCode(baseCode).get().getID();
+                Long targetID = currencyRepository.findByCode(targetCode).get().getID();
+                ExchangeRate exchangeRate = new ExchangeRate(baseID, targetID, rate);
+
+                if (exchangeRatesRepository.findByCodes(targetCode, baseCode).isEmpty()){
+                    responseService.exchangeRateDontExist();
+                    return;
+                }
+
+                if (exchangeRatesRepository.findByCodes(targetCode, baseCode).get().equals(exchangeRate)){
+                    return;
+                }
+
+                exchangeRatesRepository.updateExchangeRate(exchangeRate);
+                responseService.doPostOk();
+            }
+
+        }
+        catch (IOException exception){
+            responseService.dataBaseNotFound();
+            exception.printStackTrace();
+        }
     }
 }

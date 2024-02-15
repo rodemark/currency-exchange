@@ -3,7 +3,6 @@ package com.rodemark.servlet;
 import com.rodemark.repository.CurrencyRepository;
 import com.rodemark.services.CurrenciesService;
 import com.rodemark.services.ResponseService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;

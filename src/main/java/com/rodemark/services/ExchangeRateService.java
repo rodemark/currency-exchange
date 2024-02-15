@@ -6,7 +6,6 @@ import com.rodemark.model.ExchangeRate;
 import com.rodemark.repository.CurrencyRepository;
 import com.rodemark.repository.ExchangeRatesRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 public class ExchangeRateService {
