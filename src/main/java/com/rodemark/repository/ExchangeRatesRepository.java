@@ -120,5 +120,4 @@ public class ExchangeRatesRepository implements CrudRepository<ExchangeRate> {
 
         return 0L;
     }
-
 }

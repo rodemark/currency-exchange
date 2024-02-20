@@ -15,5 +15,5 @@ CREATE TABLE IF NOT EXISTS exchange_rates (
     UNIQUE (Base_Currency_Id, Target_Currency_Id)
 );
 
-drop table currencies cascade;
-drop table exchange_rates;
+-- drop table currencies cascade;
+-- drop table exchange_rates;

@@ -31,16 +31,18 @@ public class ExchangeService {
             return rate.multiply(amount);
         }
 
-        // TODO Доделать обмен A->C, если A -> B, B -> C
-
         Long fromID = currencyRepository.findByCode(from).get().getID();
         Long toID = currencyRepository.findByCode(to).get().getID();
 
-        if (!exchangeRatesRepository.getBaseIdByTargetId(fromID).equals(0L) & !exchangeRatesRepository.getBaseIdByTargetId(toID).equals(0L)){
-            Long baseID = exchangeRatesRepository.getBaseIdByTargetId(fromID);
+        if (!exchangeRatesRepository.getBaseIdByTargetId(fromID).equals(0L) && !exchangeRatesRepository.getBaseIdByTargetId(toID).equals(0L)) {
+            BigDecimal rateToBase = exchangeRatesRepository.findByCodes(from, "USD").get().getRate();
+            BigDecimal rateFromBase = exchangeRatesRepository.findByCodes(to, "USD").get().getRate();
 
+            BigDecimal rate = rateToBase.divide(rateFromBase, MathContext.DECIMAL128);
 
+            return rate.multiply(amount);
         }
+
 
         return new BigDecimal(0);
     }
