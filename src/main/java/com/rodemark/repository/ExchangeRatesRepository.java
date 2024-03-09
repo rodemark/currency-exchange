@@ -38,6 +38,11 @@ public class ExchangeRatesRepository implements CrudRepository<ExchangeRate> {
         }
     }
 
+    @Override
+    public Optional<ExchangeRate> findById(Long id) {
+        return Optional.empty();
+    }
+
     public Optional<ExchangeRate> findByCodes(String targetCode, String baseCode){
         CurrencyRepository currencyRepository = new CurrencyRepository();
         Optional<Currency> currencyTarget = currencyRepository.findByCode(targetCode);

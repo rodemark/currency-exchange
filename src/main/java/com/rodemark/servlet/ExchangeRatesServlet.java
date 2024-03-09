@@ -19,15 +19,18 @@ public class ExchangeRatesServlet extends HttpServlet {
     private ExchangeRatesRepository exchangeRatesRepository;
     private ResponseService responseService;
     private ExchangeRateService exchangeRateService;
+    private CurrencyRepository currencyRepository;
+
     @Override
     public void init() {
         exchangeRatesRepository = new ExchangeRatesRepository();
         exchangeRatesRepository.findAll();
 
+        currencyRepository = new CurrencyRepository();
+        currencyRepository.findAll();
+
         exchangeRateService = new ExchangeRateService();
     }
-
-    // TODO сделать вывод, чтобы вместо id были коды валют
 
     /**
      * Получение всех обменных курсов
@@ -40,8 +43,8 @@ public class ExchangeRatesServlet extends HttpServlet {
         try {
             response.setContentType("application/json");
             PrintWriter printWriter = response.getWriter();
-
-            String answer = exchangeRateService.getAllExchangeRatesJSON(exchangeRatesRepository);
+            currencyRepository = new CurrencyRepository();
+            String answer = exchangeRateService.getAllExchangeRatesJSON(exchangeRatesRepository, currencyRepository);
 
             printWriter.println(answer);
             printWriter.close();
