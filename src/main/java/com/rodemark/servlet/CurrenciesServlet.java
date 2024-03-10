@@ -73,7 +73,10 @@ public class CurrenciesServlet extends HttpServlet {
                 responseService.fieldIsMissing();
             }
             else{
-                Currency currency = new Currency(name, code, sign);
+                Currency currency = new Currency();
+                currency.setFull_name(name);
+                currency.setCode(code);
+                currency.setSign(sign);
                 if (!currenciesService.existCurrency(currency, currencyRepository)){
                     currencyRepository.insertCurrency(currency);
                     responseService.doPostOk();
