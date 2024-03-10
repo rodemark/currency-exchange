@@ -28,7 +28,7 @@ public class CurrenciesServlet extends HttpServlet {
     }
 
     /**
-     *  Получение списка всех валют.
+     *  Get the list of all currencies.
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -54,7 +54,7 @@ public class CurrenciesServlet extends HttpServlet {
 
 
     /**
-     *  Добавление новой валюты
+     *  Add a new currency.
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{

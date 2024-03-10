@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class CurrencyRepository implements CrudRepository<Currency>{
+public class CurrencyRepository implements Repository<Currency> {
     @Override
     public List<Currency> findAll() {
         List<Currency> currencies = new ArrayList<>();

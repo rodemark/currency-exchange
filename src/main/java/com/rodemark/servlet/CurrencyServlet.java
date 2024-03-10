@@ -22,8 +22,8 @@ public class CurrencyServlet extends HttpServlet {
     }
 
     /**
-     * Получение конкретной валюты.
-     * Пример запроса - GET /currency/EUR
+     * Get a specific currency.
+     * For example: GET /currency/EUR
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

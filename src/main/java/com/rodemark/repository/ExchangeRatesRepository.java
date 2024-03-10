@@ -2,13 +2,11 @@ package com.rodemark.repository;
 
 import com.rodemark.model.Currency;
 import com.rodemark.model.ExchangeRate;
-import com.rodemark.services.ExchangeService;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.*;
 
-public class ExchangeRatesRepository implements CrudRepository<ExchangeRate> {
+public class ExchangeRatesRepository implements Repository<ExchangeRate> {
     @Override
     public List<ExchangeRate> findAll() {
         String query = "select * from exchange_rates;";
@@ -110,7 +108,6 @@ public class ExchangeRatesRepository implements CrudRepository<ExchangeRate> {
         try (Connection connection = ConnectionDataBase.getConnection()) {
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-
             preparedStatement.setLong(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();

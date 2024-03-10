@@ -33,7 +33,7 @@ public class ExchangeRatesServlet extends HttpServlet {
     }
 
     /**
-     * Получение всех обменных курсов
+     * Get all exchange rates.
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -57,7 +57,7 @@ public class ExchangeRatesServlet extends HttpServlet {
     }
 
     /**
-     * Добавление нового обменного курса в базу
+     * Add a new exchange rate to the database.
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{

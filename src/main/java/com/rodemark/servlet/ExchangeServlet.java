@@ -29,8 +29,8 @@ public class ExchangeServlet extends HttpServlet {
     }
 
     /**
-     *  Расчёт перевода определённого количества средств из одной валюты в другую.
-     *  Пример запроса - GET /exchange?from=USD&to=AUD&amount=10.
+     *  Calculate the conversion of a specific amount of funds from one currency to another.
+     *  For example: GET /exchange?from=USD&to=AUD&amount=10.
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -45,9 +45,10 @@ public class ExchangeServlet extends HttpServlet {
             String to = request.getParameter("to");
             BigDecimal amount = new BigDecimal(request.getParameter("amount"));
 
-            BigDecimal result = exchangeService.convertCurrency(from, to, amount);
+            BigDecimal value = exchangeService.convertCurrency(from, to, amount);
+            String result = String.format("%.6f", value);
 
-            if (result.equals(new BigDecimal(0))){
+            if (value.equals(new BigDecimal(0))){
                 responseService.exchangeRateDontExist();
             }
 

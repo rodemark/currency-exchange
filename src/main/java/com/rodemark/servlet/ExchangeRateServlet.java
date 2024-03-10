@@ -29,8 +29,8 @@ public class ExchangeRateServlet extends HttpServlet {
     }
 
     /**
-     *  Получение конкретного обменного курса
-     *  Пример запроса - GET /exchangeRate/USDRUB
+     *  Get a specific exchange rate.
+     *  For example: GET /exchangeRate/USDRUB
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -69,8 +69,8 @@ public class ExchangeRateServlet extends HttpServlet {
     }
 
     /**
-     *  Обновление существующего в базе обменного курса.
-     *  Пример: /exchangeRate/USDRUB?rate=1
+     *  Update an existing exchange rate in the database.
+     *  For example: /exchangeRate/USDRUB?rate=1
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         responseService = new ResponseService(request, response);
